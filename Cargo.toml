@@ -3,7 +3,10 @@ name = "iter_vec"
 version = "0.1.0"
 authors = ["t18b219k <t18b219k@mail.cc.niigata-u.ac.jp>"]
 edition = "2018"
-
+license = "MIT OR Apache-2.0"
+description = "vector of iterator but specialized for std::slice::Iter"
+readme ="README.md"
+repository="https://github.com/t18b219k/iter_vec"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
