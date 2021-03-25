@@ -1,3 +1,25 @@
+//! This crate provide vector of iterator
+//!
+//! This crate aims to ExactSizeIterator for Vec<&\[T\]>
+//!
+//! usable for vertex and index buffer temporary storage
+/*! ```rust
+#[test]
+fn demo() {
+    let content0 = vec![1, 2, 3, 4];
+    let content1 = [5, 6, 7, 8];
+    let content2 = [9, 0];
+    let iter_vec = ExactSizedIterVec::build_from_vec(vec![
+        content0.iter(),
+        content1.iter(),
+        content2.iter(),
+    ]);
+    let flat: Vec<i32> = iter_vec.copied().collect();
+    assert_eq!(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0], flat)
+}
+```
+!*/
+
 #[cfg(test)]
 mod tests {
     use crate::ExactSizedIterVec;
@@ -14,6 +36,19 @@ mod tests {
         let flat: Vec<i32> = iter_vec.copied().collect();
         assert_eq!(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0], flat);
     }
+    #[test]
+    fn demo() {
+        let content0 = vec![1, 2, 3, 4];
+        let content1 = [5, 6, 7, 8];
+        let content2 = [9, 0];
+        let iter_vec = ExactSizedIterVec::build_from_vec(vec![
+            content0.iter(),
+            content1.iter(),
+            content2.iter(),
+        ]);
+        let flat: Vec<i32> = iter_vec.copied().collect();
+        assert_eq!(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0], flat)
+    }
 }
 #[derive(Debug, Default, Clone)]
 pub struct ExactSizedIterVec<'a, T> {
@@ -25,6 +60,12 @@ impl<'a, T> ExactSizedIterVec<'a, T> {
         Self {
             current_iter: 0,
             iterators: vec![],
+        }
+    }
+    pub fn build_from_vec(iter: Vec<std::slice::Iter<'a, T>>) -> Self {
+        Self {
+            current_iter: 0,
+            iterators: iter,
         }
     }
     pub fn push(&mut self, element: &'a [T]) {
